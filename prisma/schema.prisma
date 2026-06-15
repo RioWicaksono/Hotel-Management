@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  CLEANING
+  MAINTENANCE
+}
+
+enum BookingSource {
+  DIRECT
+  WALK_IN
+  REDDOORZ
+  BOOKING
+}
+
+enum PaymentStatus {
+  UNPAID
+  DP
+  PAID
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionCategory {
+  ROOM_INCOME
+  FOOD_BEVERAGE
+  MAINTENANCE
+  UTILITIES
+  SUPPLIES
+  MARKETING
+  OTHER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@map("users")
+}
+
+model Room {
+  id            String     @id @default(cuid())
+  roomNumber    String     @unique
+  type          String
+  price         Decimal    @db.Decimal(10, 2)
+  weekendPrice  Decimal?    @db.Decimal(10, 2)
+  status        RoomStatus @default(AVAILABLE)
+  description   String?
+  photos        String[]   @default([])
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  bookings      Booking[]
+  maintenance   Maintenance[]
+
+  @@index([status])
+  @@index([roomNumber])
+  @@map("rooms")
+}
+
+model Maintenance {
+  id          String   @id @default(cuid())
+  roomId      String
+  type        String
+  description String
+  cost        Decimal? @db.Decimal(10, 2)
+  status      String   @default("PENDING")
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  room        Room     @relation(fields: [roomId], references: [id])
+
+  @@index([roomId])
+  @@index([date])
+  @@map("maintenance")
+}
+
+model Guest {
+  id            String   @id @default(cuid())
+  name          String
+  email         String?
+  phone         String   @unique
+  address       String?
+  idCard        String?
+  notes         String?
+  isLoyal       Boolean  @default(false)
+  visitCount    Int      @default(0)
+  lastVisit     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  bookings      Booking[]
+
+  @@index([name])
+  @@index([phone])
+  @@map("guests")
+}
+
+model Booking {
+  id              String         @id @default(cuid())
+  roomId          String
+  guestId         String
+  checkIn         DateTime       @db.Date
+  checkOut        DateTime       @db.Date
+  source          BookingSource  @default(DIRECT)
+  paymentStatus   PaymentStatus  @default(UNPAID)
+  totalAmount     Decimal        @db.Decimal(10, 2)
+  paidAmount      Decimal        @default(0) @db.Decimal(10, 2)
+  notes           String?
+  isWeekendRate   Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  room            Room           @relation(fields: [roomId], references: [id])
+  guest           Guest          @relation(fields: [guestId], references: [id])
+  transactions    Transaction[]
+
+  @@index([roomId])
+  @@index([guestId])
+  @@index([checkIn])
+  @@index([checkOut])
+  @@index([paymentStatus])
+  @@index([source])
+  @@map("bookings")
+}
+
+model Transaction {
+  id          String             @id @default(cuid())
+  type        TransactionType
+  category    TransactionCategory
+  amount      Decimal           @db.Decimal(10, 2)
+  description String
+  date        DateTime          @db.Date
+  bookingId   String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  booking     Booking?           @relation(fields: [bookingId], references: [id])
+
+  @@index([type])
+  @@index([category])
+  @@index([date])
+  @@index([bookingId])
+  @@map("transactions")
+}
+
+model Settings {
+  id            String   @id @default("hotel_settings")
+  hotelName     String   @default("Hotel Management")
+  hotelAddress  String?
+  hotelPhone    String?
+  hotelEmail    String?
+  darkMode      String   @default("dark")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("settings")
+}

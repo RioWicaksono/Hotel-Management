@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Colorful Modern Theme - Dark (Default) */
+    --background: 250 100% 5%;
+    --foreground: 0 0% 98%;
+    --card: 250 30% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 250 30% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 330 100% 65%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 270 60% 20%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 270 30% 15%;
+    --muted-foreground: 270 20% 60%;
+    --accent: 280 80% 60%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 100% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 270 30% 20%;
+    --input: 270 30% 15%;
+    --ring: 330 100% 65%;
+    --radius: 0.75rem;
+  }
+
+  .light {
+    /* Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 250 20% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 250 20% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 250 20% 10%;
+    --primary: 330 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 250 30% 95%;
+    --secondary-foreground: 250 20% 20%;
+    --muted: 250 20% 96%;
+    --muted-foreground: 250 10% 45%;
+    --accent: 280 80% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 250 20% 90%;
+    --input: 250 20% 94%;
+    --ring: 330 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--accent)));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--accent)));
+}
+
+/* Transitions */
+* {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px hsl(var(--primary) / 0.15);
+}
+
+/* Gradient Text */
+.text-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient Borders */
+.border-gradient {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--card), var(--card)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Glow Effects */
+.glow-pink {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 20px hsl(160 84% 45%) / 0.4);
+}
+
+.glow-violet {
+  box-shadow: 0 0 20px hsl(270 80% 65%) / 0.4);
+}
+
+/* Gradient Buttons */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+}
+
+.bg-gradient-emerald {
+  background: linear-gradient(135deg, hsl(160 84% 45%), hsl(180 80% 55%));
+}
+
+.bg-gradient-violet {
+  background: linear-gradient(135deg, hsl(270 80% 65%), hsl(330 100% 65%));
+}
+
+.bg-gradient-amber {
+  background: linear-gradient(135deg, hsl(38 92% 50%), hsl(25 95% 55%));
+}
+
+/* Glassmorphism Effect */
+.glass {
+  background: linear-gradient(135deg, hsl(var(--card) / 0.8), hsl(var(--card) / 0.6));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease;
+}
