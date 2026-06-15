@@ -25,13 +25,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera'}>
-      <div className="flex-1 lg:ml-64">
-        <main className="p-4 lg:p-6">
-          {children}
-        </main>
-        <FloatingAction rooms={rooms} guests={guests} />
-      </div>
+    <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera' rooms={rooms} guests={guests}>
+      <main className="flex-1 p-4 lg:p-6">
+        {children}
+      </main>
+      <FloatingAction rooms={rooms} guests={guests} />
     </DashboardSidebar>
   )
 }

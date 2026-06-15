@@ -30,14 +30,15 @@ const navigation = [
 
 interface DashboardSidebarProps {
   hotelName?: string
+  children: React.ReactNode
 }
 
-export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSidebarProps) {
+export function DashboardSidebar({ hotelName = 'Losmen Sejahtera', children }: DashboardSidebarProps) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <>
+    <div className="min-h-screen">
       {/* Mobile Menu Button */}
       <button
         onClick={() => setMobileOpen(true)}
@@ -103,7 +104,7 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSi
         <div className="border-t p-2">
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10 transition-colors"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10"
           >
             <LogOut className="h-5 w-5" />
             <span>Logout</span>
@@ -111,10 +112,10 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSi
         </div>
       </aside>
 
-      {/* Main content wrapper - Push content to right of sidebar */}
-      <div className="lg:pl-64">
+      {/* Main content */}
+      <main className="lg:pl-64">
         {children}
-      </div>
-    </>
+      </main>
+    </div>
   )
 }
