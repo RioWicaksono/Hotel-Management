@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Hotel Management',
   },
   formatDetection: {
     telephone: false,
