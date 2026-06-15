@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { compare } from 'bcryptjs'
 import { prisma } from './prisma'
 
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build-only-change-in-production'
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -61,7 +63,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: NEXTAUTH_SECRET,
 }
