@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:hotel": "next dev -p 7000",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "start:hotel": "next start -p 7000",
     "lint": "next lint",
