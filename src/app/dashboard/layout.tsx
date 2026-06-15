@@ -5,11 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { DashboardSidebar } from '@/components/dashboard/sidebar'
 import { FloatingAction } from '@/components/floating-action'
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -21,9 +17,7 @@ export default async function DashboardLayout({
   let guests: any[] = []
 
   try {
-    settings = await prisma.settings.findUnique({
-      where: { id: 'hotel_settings' },
-    })
+    settings = await prisma.settings.findUnique({ where: { id: 'hotel_settings' })
     rooms = await prisma.room.findMany({ orderBy: { roomNumber: 'asc' })
     guests = await prisma.guest.findMany({ orderBy: { name: 'asc' })
   } catch (error) {
@@ -31,17 +25,13 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera'} />
-
-      {/* Content wrapper - sidebar width offset on desktop */}
-      <div className="lg:pl-64">
-        <main className="p-4 pt-16 lg:pt-4">
+    <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera'}>
+      <div className="flex-1 lg:ml-64">
+        <main className="p-4 lg:p-6">
           {children}
         </main>
+        <FloatingAction rooms={rooms} guests={guests} />
       </div>
-
-      <FloatingAction rooms={rooms} guests={guests} />
-    </div>
+    </DashboardSidebar>
   )
 }

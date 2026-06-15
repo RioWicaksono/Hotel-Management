@@ -9,7 +9,7 @@ import {
   Calendar,
   Users,
   Receipt,
-  FileBar,
+  BarChart3,
   Settings,
   LogOut,
   Menu,
@@ -24,7 +24,7 @@ const navigation = [
   { name: 'Booking', href: '/dashboard/bookings', icon: Calendar },
   { name: 'Tamu', href: '/dashboard/guests', icon: Users },
   { name: 'Transaksi', href: '/dashboard/transactions', icon: Receipt },
-  { name: 'Laporan', href: '/dashboard/reports', icon: FileBar },
+  { name: 'Laporan', href: '/dashboard/reports', icon: BarChart3 },
   { name: 'Pengaturan', href: '/dashboard/settings', icon: Settings },
 ]
 
@@ -38,10 +38,10 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSi
 
   return (
     <>
-      {/* Mobile Menu Button - Fixed position */}
+      {/* Mobile Menu Button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg lg:hidden"
+        className="fixed top-4 left-4 z-50 lg:hidden flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg"
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -54,11 +54,11 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSi
         />
       )}
 
-      {/* Sidebar - Fixed left */}
+      {/* Sidebar - Full height fixed sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-card border-r transition-transform duration-300',
-          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          'fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-card border-r transition-transform duration-300',
+          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:z-30'
         )}
       >
         {/* Header */}
@@ -71,32 +71,29 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSi
               {hotelName}
             </span>
           </div>
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="lg:hidden"
-          >
+          <button onClick={() => setMobileOpen(false)} className="lg:hidden p-1 rounded hover:bg-muted">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Navigation - Scrollable */}
+        {/* Navigation */}
         <nav className="flex-1 overflow-y-auto p-2 space-y-1">
           {navigation.map((item) => {
             const isActive = pathname === item.href
             return (
               <Link
-                key={item.href}
+                key={item.name}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg'
-                    : 'text-muted-foreground hover:bg-muted'
+                    ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg shadow-pink-500/25'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
               >
-                <item.icon className="h-5 w-5" />
-                {item.name}
+                <item.icon className={cn('h-5 w-5', isActive ? 'text-white' : '')} />
+                <span>{item.name}</span>
               </Link>
             )
           })}
@@ -106,19 +103,17 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSi
         <div className="border-t p-2">
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10 transition-colors"
           >
             <LogOut className="h-5 w-5" />
-            Logout
+            <span>Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* Main content wrapper - Push content */}
+      {/* Main content wrapper - Push content to right of sidebar */}
       <div className="lg:pl-64">
-        {navigation.map((item) => (
-          <div key={item.href} className="hidden" />
-        ))}
+        {children}
       </div>
     </>
   )
