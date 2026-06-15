@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { DashboardSidebar } from '@/components/dashboard/sidebar'
-import { DashboardHeader } from '@/components/dashboard/header'
 import { FloatingAction } from '@/components/floating-action'
 
 export default async function DashboardLayout({
@@ -25,24 +24,23 @@ export default async function DashboardLayout({
     settings = await prisma.settings.findUnique({
       where: { id: 'hotel_settings' },
     })
-
-    rooms = await prisma.room.findMany({ orderBy: { roomNumber: 'asc' } })
-    guests = await prisma.guest.findMany({
-      orderBy: { name: 'asc' },
-    })
+    rooms = await prisma.room.findMany({ orderBy: { roomNumber: 'asc' })
+    guests = await prisma.guest.findMany({ orderBy: { name: 'asc' })
   } catch (error) {
     console.error('Error fetching data:', error)
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <DashboardSidebar hotelName={settings?.hotelName || 'Hotel Management'} />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <DashboardHeader user={session.user!} hotelName={settings?.hotelName} />
-        <main className="flex-1 overflow-y-auto p-4 bg-background">
+    <div className="min-h-screen bg-background">
+      <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera'} />
+
+      {/* Content wrapper - sidebar width offset on desktop */}
+      <div className="lg:pl-64">
+        <main className="p-4 pt-16 lg:pt-4">
           {children}
         </main>
       </div>
+
       <FloatingAction rooms={rooms} guests={guests} />
     </div>
   )
