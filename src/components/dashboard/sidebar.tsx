@@ -30,19 +30,18 @@ const navigation = [
 
 interface DashboardSidebarProps {
   hotelName?: string
-  children: React.ReactNode
 }
 
-export function DashboardSidebar({ hotelName = 'Losmen Sejahtera', children }: DashboardSidebarProps) {
+export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSidebarProps) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="min-h-screen">
+    <>
       {/* Mobile Menu Button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed top-4 left-4 z-50 lg:hidden flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg"
+        className="fixed top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg lg:hidden"
       >
         <Menu className="h-5 w-5" />
       </button>
@@ -55,11 +54,11 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera', children }: D
         />
       )}
 
-      {/* Sidebar - Full height fixed sidebar */}
+      {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-card border-r transition-transform duration-300',
-          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:z-30'
+          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-card border-r transition-transform duration-300',
+          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         {/* Header */}
@@ -72,29 +71,29 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera', children }: D
               {hotelName}
             </span>
           </div>
-          <button onClick={() => setMobileOpen(false)} className="lg:hidden p-1 rounded hover:bg-muted">
+          <button onClick={() => setMobileOpen(false)} className="lg:hidden">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* Nav */}
         <nav className="flex-1 overflow-y-auto p-2 space-y-1">
           {navigation.map((item) => {
             const isActive = pathname === item.href
             return (
               <Link
-                key={item.name}
+                key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg shadow-pink-500/25'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white shadow-lg'
+                    : 'text-muted-foreground hover:bg-muted'
                 )}
               >
-                <item.icon className={cn('h-5 w-5', isActive ? 'text-white' : '')} />
-                <span>{item.name}</span>
+                <item.icon className="h-5 w-5" />
+                {item.name}
               </Link>
             )
           })}
@@ -107,15 +106,10 @@ export function DashboardSidebar({ hotelName = 'Losmen Sejahtera', children }: D
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10"
           >
             <LogOut className="h-5 w-5" />
-            <span>Logout</span>
+            Logout
           </button>
         </div>
       </aside>
-
-      {/* Main content */}
-      <main className="lg:pl-64">
-        {children}
-      </main>
-    </div>
+    </>
   )
 }

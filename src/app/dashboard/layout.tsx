@@ -17,19 +17,22 @@ export default async function DashboardLayout({ children }: { children: React.Re
   let guests: any[] = []
 
   try {
-    settings = await prisma.settings.findUnique({ where: { id: 'hotel_settings' })
-    rooms = await prisma.room.findMany({ orderBy: { roomNumber: 'asc' })
-    guests = await prisma.guest.findMany({ orderBy: { name: 'asc' })
+    settings = await prisma.settings.findUnique({ where: { id: 'hotel_settings' } })
+    rooms = await prisma.room.findMany({ orderBy: { roomNumber: 'asc' } })
+    guests = await prisma.guest.findMany({ orderBy: { name: 'asc' } })
   } catch (error) {
     console.error('Error fetching data:', error)
   }
 
   return (
-    <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera' rooms={rooms} guests={guests}>
-      <main className="flex-1 p-4 lg:p-6">
-        {children}
-      </main>
+    <div className="min-h-screen bg-background">
+      <DashboardSidebar hotelName={settings?.hotelName || 'Losmen Sejahtera'} />
+      <div className="lg:pl-64">
+        <main className="p-4 pt-16 lg:pt-4 min-h-screen">
+          {children}
+        </main>
+      </div>
       <FloatingAction rooms={rooms} guests={guests} />
-    </DashboardSidebar>
+    </div>
   )
 }
