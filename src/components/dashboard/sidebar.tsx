@@ -15,24 +15,26 @@ import {
   LogOut,
   Menu,
   X,
+  LayoutDashboard,
+  BedDouble,
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
 const navigation = [
-  { name: 'Kamar', href: '/rooms', icon: Bed },
-  { name: 'Kalender', href: '/calendar', icon: CalendarDays },
-  { name: 'Booking', href: '/bookings', icon: Calendar },
-  { name: 'Tamu', href: '/guests', icon: Users },
-  { name: 'Transaksi', href: '/transactions', icon: Receipt },
-  { name: 'Laporan', href: '/reports', icon: FileBarChart },
-  { name: 'Pengaturan', href: '/settings', icon: Settings },
+  { name: 'Dashboard', href: '/dashboard', icon: BedDouble },
+  { name: 'Kamar', href: '/dashboard/rooms', icon: Bed },
+  { name: 'Booking', href: '/dashboard/bookings', icon: Calendar },
+  { name: 'Tamu', href: '/dashboard/guests', icon: Users },
+  { name: 'Transaksi', href: '/dashboard/transactions', icon: Receipt },
+  { name: 'Laporan', href: '/dashboard/reports', icon: FileBarChart },
+  { name: 'Pengaturan', href: '/dashboard/settings', icon: Settings },
 ]
 
 interface DashboardSidebarProps {
   hotelName?: string
 }
 
-export function DashboardSidebar({ hotelName = 'Hotel' }: DashboardSidebarProps) {
+export function DashboardSidebar({ hotelName = 'Losmen Sejahtera' }: DashboardSidebarProps) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -57,7 +59,7 @@ export function DashboardSidebar({ hotelName = 'Hotel' }: DashboardSidebarProps)
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-card border-r transition-transform duration-300 lg:relative lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-card border-r transition-transform duration-300 lg:translate-x-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -82,13 +84,13 @@ export function DashboardSidebar({ hotelName = 'Hotel' }: DashboardSidebarProps)
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-violet-500">
             <Bed className="h-4 w-4 text-white" />
           </div>
-          <span className="ml-2 text-sm font-bold bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent truncate">
+          <span className="ml-2 text-sm font-bold bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-transparent">
             {hotelName}
           </span>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-0.5 overflow-y-auto p-2">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-2">
           {navigation.map((item) => {
             const isActive = pathname === item.href
             return (
